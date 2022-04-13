@@ -4,12 +4,12 @@ Try running some of the following tasks:
 
 Local deploy
 ```shell
-npx hardhat run tasks\deploy.js --network localhost
+npx hardhat run scripts/deploy.ts --network localhost
 ```
 
 Rinkeby deploy
 ```shell
-npx hardhat run tasks\deploy.js --network rinkeby
+npx hardhat run scripts/deploy.ts --network rinkeby
 ```
 
 Test
