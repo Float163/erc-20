@@ -24,5 +24,5 @@ npx hardhat verify --network rinkeby <contract address> <token name> <token symb
 
 transfer
 ```shell
-npx hardhat newcampaignn --account <who run> --contract <contract address>
+npx hardhat transfer --recipient <address> --value <amount>
 ```
