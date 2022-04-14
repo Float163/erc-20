@@ -8,6 +8,7 @@ import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "../erc-20/tasks/transfer"
 import "../erc-20/tasks/transferFrom"
+import "../erc-20/tasks/approve"
 
 dotenv.config();
 

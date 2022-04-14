@@ -2,12 +2,17 @@ import { task } from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 
 import { Contract } from "ethers";
-import { ContractFactory } from "ethers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 
 task("approve", "Approve transfer amount token to address", async (taskArgs, hre) => {
- 
-  }).addParam("recipient", "The recipient address").addParam("value", "amount of token");
+  let hardhatToken : Contract;
+  let ta = (taskArgs as any);
+
+  hardhatToken = await hre.ethers.getContractAt("m63", "0x5FbDB2315678afecb367f032d93F642f64180aa3");
+  const result = await hardhatToken.approve(ta.recipient, hre.ethers.utils.parseEther(ta.value));
+
+  console.log(result);
+}).addParam("recipient", "The recipient address")
+.addParam("value", "Amount of token");
   
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
