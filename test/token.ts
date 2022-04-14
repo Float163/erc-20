@@ -32,7 +32,7 @@ describe("Token contract", function () {
   beforeEach(async function () {
     Token = await ethers.getContractFactory("m63");
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-    hardhatToken = await Token.deploy('platinum', 'PL');
+    hardhatToken = await Token.deploy('platinum', 'PL', 18, ethers.utils.parseEther('500'));
   });
 
   describe("Deployment", function () {
@@ -49,45 +49,45 @@ describe("Token contract", function () {
   describe("Transactions", function () {
     it("Should mint tokens to accounts", async function () {
         // Mint 100 tokens from to addr1
-        await hardhatToken.mint(addr1.address, 100);
+        await hardhatToken.mint(addr1.address, ethers.utils.parseEther('100'));
         const addr1Balance = await hardhatToken.balanceOf(addr1.address);
-        expect(addr1Balance).to.equal(100);
+        expect(addr1Balance).to.equal(ethers.utils.parseEther('100'));
       });
 
     it("Should burn tokens from accounts", async function () {
         // Burn 50 tokens from to addr1
-        await hardhatToken.mint(addr1.address, 100);        
-        await hardhatToken.burn(addr1.address, 50);
+        await hardhatToken.mint(addr1.address, ethers.utils.parseEther('100'));        
+        await hardhatToken.burn(addr1.address, ethers.utils.parseEther('50'));
         const addr1Balance = await hardhatToken.balanceOf(addr1.address);
-        expect(addr1Balance).to.equal(50);
+        expect(addr1Balance).to.equal(ethers.utils.parseEther('50'));
     });
 
     it("Should fail if mint sender not owner", async function () {
       await expect(
-        hardhatToken.connect(addr1).mint(addr2.address, 100)
+        hardhatToken.connect(addr1).mint(addr2.address, ethers.utils.parseEther('100'))
       ).to.be.revertedWith("Only owner");
     });
 
     it("Should fail if burn sender not owner", async function () {
       await expect(
-        hardhatToken.connect(addr1).burn(addr2.address, 100)
+        hardhatToken.connect(addr1).burn(addr2.address, ethers.utils.parseEther('100'))
       ).to.be.revertedWith("Only owner");
     });
       
     it("Should transfer tokens between accounts", async function () {
-      await hardhatToken.mint(addr1.address, 100);              
-      await hardhatToken.connect(addr1).transfer(addr2.address, 50);
+      await hardhatToken.mint(addr1.address, ethers.utils.parseEther('100'));              
+      await hardhatToken.connect(addr1).transfer(addr2.address, ethers.utils.parseEther('50'));
       const addr1Balance = await hardhatToken.balanceOf(addr1.address);      
       const addr2Balance = await hardhatToken.balanceOf(addr2.address);
-      expect(addr1Balance).to.equal(50);      
-      expect(addr2Balance).to.equal(50);
+      expect(addr1Balance).to.equal(ethers.utils.parseEther('50'));      
+      expect(addr2Balance).to.equal(ethers.utils.parseEther('50'));
     });
 
     it("Should fail if sender doesn’t have enough tokens", async function () {
       const initialOwnerBalance = await hardhatToken.balanceOf(owner.address);
-      await hardhatToken.mint(addr1.address, 100);              
+      await hardhatToken.mint(addr1.address, ethers.utils.parseEther('100'));              
       await expect(
-        hardhatToken.connect(addr1).transfer(owner.address, 101)
+        hardhatToken.connect(addr1).transfer(owner.address, ethers.utils.parseEther('101'))
       ).to.be.revertedWith("No enough token");
 
       expect(await hardhatToken.balanceOf(owner.address)).to.equal(
@@ -97,40 +97,40 @@ describe("Token contract", function () {
 
     it("Should update balances after transfers", async function () {
       const initialOwnerBalance = await hardhatToken.balanceOf(owner.address);
-      await hardhatToken.transfer(addr1.address, 100);
-      await hardhatToken.transfer(addr2.address, 50);
+      await hardhatToken.transfer(addr1.address, ethers.utils.parseEther('100'));
+      await hardhatToken.transfer(addr2.address, ethers.utils.parseEther('50'));
       const finalOwnerBalance = await hardhatToken.balanceOf(owner.address);
-      expect(finalOwnerBalance).to.equal(initialOwnerBalance.sub(150));
+      expect(finalOwnerBalance).to.equal(initialOwnerBalance.sub(ethers.utils.parseEther('150')));
 
       const addr1Balance = await hardhatToken.balanceOf(addr1.address);
-      expect(addr1Balance).to.equal(100);
+      expect(addr1Balance).to.equal(ethers.utils.parseEther('100'));
 
       const addr2Balance = await hardhatToken.balanceOf(addr2.address);
-      expect(addr2Balance).to.equal(50);
+      expect(addr2Balance).to.equal(ethers.utils.parseEther('50'));
     });
 
     it("Should allowance transfer", async function () {
-      await hardhatToken.connect(addr1).approve(addr2.address, 100);
+      await hardhatToken.connect(addr1).approve(addr2.address, ethers.utils.parseEther('100'));
       expect(await hardhatToken.allowance(addr1.address, addr2.address)).to.equal(
-        100
+        ethers.utils.parseEther('100')
       );
     });
 
     it("Should transfer token if allowance", async function () {
-      await hardhatToken.mint(addr1.address, 200);
-      await hardhatToken.connect(addr1).approve(addr2.address, 100);
-      await hardhatToken.transferFrom(addr1.address, addr2.address, 50)
+      await hardhatToken.mint(addr1.address, ethers.utils.parseEther('200'));
+      await hardhatToken.connect(addr1).approve(addr2.address, ethers.utils.parseEther('100'));
+      await hardhatToken.transferFrom(addr1.address, addr2.address, ethers.utils.parseEther('50'))
       const addr1Balance = await hardhatToken.balanceOf(addr1.address);
-      expect(addr1Balance).to.equal(150);
+      expect(addr1Balance).to.equal(ethers.utils.parseEther('150'));
       const addr2Balance = await hardhatToken.balanceOf(addr2.address);
-      expect(addr2Balance).to.equal(50);
+      expect(addr2Balance).to.equal(ethers.utils.parseEther('50'));
     });
 
 
     it("Should fail if allowance doesn’t have enough tokens", async function () {
-      await hardhatToken.connect(addr1).approve(addr2.address, 100);
+      await hardhatToken.connect(addr1).approve(addr2.address, ethers.utils.parseEther('100'));
       await expect(
-        hardhatToken.transferFrom(addr1.address, addr2.address, 101)
+        hardhatToken.transferFrom(addr1.address, addr2.address, ethers.utils.parseEther('101'))
       ).to.be.revertedWith("No enough token");
     });
 
