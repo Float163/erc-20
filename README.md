@@ -19,7 +19,7 @@ npx hardhat test
 
 Verify
 ```shell
-npx hardhat verify --network rinkeby <contract address> <token name> <token symbol>
+npx hardhat verify --network rinkeby <contract address> <token name> <token symbol> <decimals> <totalSupply>
 ```
 
 transfer
