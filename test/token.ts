@@ -116,6 +116,17 @@ describe("Token contract", function () {
       );
     });
 
+    it("Should transfer token if allowance", async function () {
+      await hardhatToken.mint(addr1.address, 200);
+      await hardhatToken.connect(addr1).approve(addr2.address, 100);
+      await hardhatToken.transferFrom(addr1.address, addr2.address, 50)
+      const addr1Balance = await hardhatToken.balanceOf(addr1.address);
+      expect(addr1Balance).to.equal(150);
+      const addr2Balance = await hardhatToken.balanceOf(addr2.address);
+      expect(addr2Balance).to.equal(50);
+    });
+
+
     it("Should fail if allowance doesn’t have enough tokens", async function () {
       await hardhatToken.connect(addr1).approve(addr2.address, 100);
       await expect(
