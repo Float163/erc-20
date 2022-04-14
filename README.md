@@ -26,3 +26,13 @@ transfer
 ```shell
 npx hardhat transfer --recipient <address> --value <amount>
 ```
+
+transferFrom
+```shell
+npx hardhat transferFrom --sender <address> --recipient <address> --value <amount>
+```
+
+approve
+```shell
+npx hardhat approve --recipient <address> --value <amount>
+```
