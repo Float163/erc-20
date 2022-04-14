@@ -13,13 +13,13 @@ contract m63 {
     mapping (address => uint256) private _balances;
     mapping (address => mapping (address => uint256)) private _allowances;    
 
-    constructor(string memory _name, string memory _symbol) {
+    constructor(string memory _name, string memory _symbol, uint8 _decimals, uint256 _totalSupply) {
         owner = msg.sender; 
         name = _name;
         symbol = _symbol;
-        decimals = 8;
-        _balances[owner] = 500;
-        totalSupply = 500;
+        decimals = _decimals;
+        _balances[owner] = _totalSupply;
+        totalSupply = _totalSupply;
     }
 
 

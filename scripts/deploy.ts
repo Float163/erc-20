@@ -15,7 +15,7 @@ async function main() {
 
   // We get the contract to deploy
   const M63 = await ethers.getContractFactory("m63");
-  const m63 = await M63.deploy('platinum', 'PL');
+  const m63 = await M63.deploy('platinum', 'PL', 18, ethers.utils.parseEther('10'));
 
   await m63.deployed();
 
