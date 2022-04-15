@@ -1,22 +1,16 @@
+import * as conf from "../config";
 import { task } from "hardhat/config";
-import "@nomiclabs/hardhat-waffle";
 
-import { Contract } from "ethers";
+task("transfer", "Transfer")
+    .addParam("recipient", "The recipient address")
+    .addParam("value", "Amount of token")
+    .setAction(async (taskArgs, { ethers }) => {
+    let hardhatToken = await ethers.getContractAt(conf.FABRIC_NAME, conf.CONTRACT_ADDRESS);
+    const result = await hardhatToken.transfer(taskArgs.recipient, ethers.utils.parseEther(taskArgs.value));
+    console.log(result);
+  });
 
-task("transfer", "Transfer amount token to address", async (taskArgs, hre) => {
-  let hardhatToken : Contract;
-  const ta = (taskArgs as any);
-    
-  hardhatToken = await hre.ethers.getContractAt("m63", "0x5FbDB2315678afecb367f032d93F642f64180aa3");
-  const result = await hardhatToken.transfer(ta.recipient, hre.ethers.utils.parseEther(ta.value));
-
-  console.log(result);
-}).addParam("recipient", "The recipient address")
-.addParam("value", "Amount of token");
+  export default {
+    solidity: "0.8.4"
+  };
   
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-
-export default {
-  solidity: "0.8.4"
-};
