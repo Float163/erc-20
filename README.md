@@ -1,5 +1,7 @@
 # Simple ERC-20 Token contract
 
+Verified contract - https://rinkeby.etherscan.io/address/0xa243973C370C858688110FB3fB6397049A812658#code
+
 Try running some of the following tasks:
 
 Local deploy
